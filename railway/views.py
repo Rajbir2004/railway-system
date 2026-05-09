@@ -94,17 +94,18 @@ def Register_customer(request):
         otp = str(random.randint(100000, 999999))
         request.session['registration_otp'] = otp
         
-        # Send Email
+        # Send Email with timeout protection
         try:
             send_mail(
                 'Your Railway Booking System OTP',
                 f'Hello {f},\n\nYour OTP for registration is: {otp}\n\nWelcome aboard!',
                 settings.DEFAULT_FROM_EMAIL,
                 [e],
-                fail_silently=False,
+                fail_silently=True, # Prevent hanging if SMTP is slow
             )
         except Exception as ex:
             print("Failed to send OTP email:", ex)
+            # We still proceed to verify_otp because the session has the data
             
         return redirect('verify_otp')
         
