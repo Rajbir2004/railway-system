@@ -7,6 +7,11 @@ class Command(BaseCommand):
     help = 'Seeds the database with sample trains and routes'
 
     def handle(self, *args, **kwargs):
+        # Check if database already has trains
+        if Add_Train.objects.exists():
+            self.stdout.write(self.style.WARNING('Database already contains trains. Skipping seed data to prevent duplicates.'))
+            return
+
         self.stdout.write('Seeding database...')
 
         # List of realistic Indian train names

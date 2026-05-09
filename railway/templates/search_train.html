@@ -14,7 +14,7 @@
                     <select name="fcity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary" required>
                         <option value="" disabled selected>Select Origin</option>
                         {% for i in data2 %}
-                            <option value="{{ i.route }}">{{ i.route }}</option>
+                            <option value="{{ i }}">{{ i }}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -23,7 +23,7 @@
                     <select name="tcity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary" required>
                         <option value="" disabled selected>Select Destination</option>
                         {% for i in data2 %}
-                            <option value="{{ i.route }}">{{ i.route }}</option>
+                            <option value="{{ i }}">{{ i }}</option>
                         {% endfor %}
                     </select>
                 </div>
