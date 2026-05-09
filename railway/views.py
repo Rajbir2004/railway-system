@@ -211,10 +211,14 @@ def Search_Train(request):
                 if i.train.train_no == j.train.train_no:
                     route1.append(Add_Train.objects.filter(train_no=i.train.train_no))
         
-        fare1 = data1.first().fare if data1.exists() else 0
-        fare2 = data2.first().fare if data2.exists() else 0
-        fare3 = abs(fare2 - fare1)
-        if 0 < fare3 < 5:
+        dist1 = data1.first().distance if data1.exists() else 0
+        dist2 = data2.first().distance if data2.exists() else 0
+        total_dist = abs(dist2 - dist1)
+        
+        # Calculate fare: 0.5 RS per KM
+        fare3 = int(total_dist * 0.5)
+        
+        if fare3 < 5:
             fare3 = 5
             
         route = f + " to " + t
