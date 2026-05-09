@@ -283,7 +283,7 @@ def Card_Detail(request, total, coun, route1, pid):
                     'Thank you for booking with us! Please view this email in an HTML-compatible client to see your e-ticket.',
                     settings.DEFAULT_FROM_EMAIL,
                     [request.user.email],
-                    fail_silently=False,
+                    fail_silently=True,
                     html_message=html_message
                 )
             except Exception as e:
