@@ -254,11 +254,8 @@ def Book_detail(request, coun, pid, route1):
             
             passenger = Passenger.objects.create(user=user1, train=data2, route=route1, name=f, gender=da, age=t, fare=search_fare, date1=search_date)
             
-            # FIX: Save search_fare instead of 'total' which was the previous sum
-            Book_ticket.objects.create(user=user1, route=route1, fare=search_fare, passenger=passenger, date2=search_date)
-            
             if passenger:
-                error = True
+                return redirect('book_detail', coun=coun, pid=pid, route1=route1)
         else:
             housefull = True
             
@@ -294,6 +291,8 @@ def Card_Detail(request, total, coun, route1, pid):
             if i.status != "set":
                 i.status = "set"
                 i.save()
+                # Create the actual ticket ONLY after payment
+                Book_ticket.objects.create(user=user1, route=route1, fare=i.fare, passenger=i, date2=i.date1)
                 just_booked.append(i)
                 
         # Send Email E-Ticket via Apps Script API
