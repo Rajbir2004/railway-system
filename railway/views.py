@@ -27,7 +27,8 @@ def send_custom_mail(subject, message, recipient_list, html_message=None):
     }
     try:
         response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'}, timeout=10)
-        return response.status_code == 200
+        print("Apps Script Response:", response.text) # Debug log
+        return response.status_code == 200 and "Success" in response.text
     except Exception as e:
         print("Apps Script Mail Error:", e)
         return False
