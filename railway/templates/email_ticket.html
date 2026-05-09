@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Your E-Ticket</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px;">
+    <div style="max-w: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        
+        <!-- Header -->
+        <div style="background-color: #1e3a8a; color: white; padding: 20px; text-align: center;">
+            <h1 style="margin: 0; font-size: 24px;">Railway E-Ticket</h1>
+            <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.8;">Thank you for travelling with us!</p>
+        </div>
+
+        <!-- Train Details -->
+        <div style="padding: 20px; border-bottom: 2px dashed #e2e8f0;">
+            <h2 style="margin: 0 0 10px 0; color: #1e3a8a; font-size: 18px;">Journey Details</h2>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 5px 0; color: #64748b;"><strong>Train:</strong></td>
+                    <td style="padding: 5px 0; text-align: right; font-weight: bold;">{{ data2.trainname }} ({{ data2.train_no }})</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #64748b;"><strong>Route:</strong></td>
+                    <td style="padding: 5px 0; text-align: right; font-weight: bold;">{{ data2.from_city }} to {{ route1 }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #64748b;"><strong>Departure:</strong></td>
+                    <td style="padding: 5px 0; text-align: right;">{{ data2.departuretime }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #64748b;"><strong>Arrival:</strong></td>
+                    <td style="padding: 5px 0; text-align: right;">{{ data2.arrivaltime }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 5px 0; color: #64748b;"><strong>Date:</strong></td>
+                    <td style="padding: 5px 0; text-align: right;">{{ pro.0.date1 }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Passenger Details -->
+        <div style="padding: 20px; border-bottom: 2px dashed #e2e8f0;">
+            <h2 style="margin: 0 0 10px 0; color: #1e3a8a; font-size: 18px;">Passenger Details</h2>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background-color: #f8fafc;">
+                        <th style="padding: 8px; border-bottom: 1px solid #e2e8f0;">Name</th>
+                        <th style="padding: 8px; border-bottom: 1px solid #e2e8f0;">Age</th>
+                        <th style="padding: 8px; border-bottom: 1px solid #e2e8f0;">Gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in pro %}
+                    <tr>
+                        <td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">{{ p.name }}</td>
+                        <td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">{{ p.age }}</td>
+                        <td style="padding: 8px; border-bottom: 1px solid #e2e8f0;">{{ p.gender }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Payment Summary -->
+        <div style="padding: 20px; background-color: #f8fafc;">
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="font-size: 16px; color: #1e3a8a; font-weight: bold;">Total Amount Paid</td>
+                    <td style="font-size: 20px; color: #16a34a; font-weight: bold; text-align: right;">₹{{ total }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div style="padding: 15px; text-align: center; color: #94a3b8; font-size: 12px;">
+            <p style="margin: 0;">This is an automatically generated email. Please do not reply.</p>
+            <p style="margin: 5px 0 0 0;">&copy; Railway Booking System</p>
+        </div>
+    </div>
+</body>
+</html>

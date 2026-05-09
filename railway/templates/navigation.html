@@ -1,0 +1,29 @@
+<nav class="bg-primary text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <div class="flex items-center">
+                <a href="{% url 'nav' %}" class="flex-shrink-0 flex items-center gap-2">
+                    <i class="fa-solid fa-train text-2xl text-accent"></i>
+                    <span class="font-bold text-xl tracking-tight">Railway Booking</span>
+                </a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'nav' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors">Home</a>
+                <a href="{% url 'about' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors">About</a>
+                <a href="{% url 'contact' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors">Contact</a>
+                
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_staff %}
+                        <a href="{% url 'admindashboard' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors">Admin Dashboard</a>
+                    {% else %}
+                        <a href="{% url 'dashboard' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors">My Dashboard</a>
+                    {% endif %}
+                    <a href="{% url 'log_out' %}" class="ml-4 px-4 py-2 rounded-md text-sm font-medium bg-red-600 hover:bg-red-700 transition-colors">Logout</a>
+                {% else %}
+                    <a href="{% url 'login_customer' %}" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-800 transition-colors">Login</a>
+                    <a href="{% url 'register_customer' %}" class="ml-2 px-4 py-2 rounded-md text-sm font-medium bg-accent hover:bg-yellow-600 text-white transition-colors">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

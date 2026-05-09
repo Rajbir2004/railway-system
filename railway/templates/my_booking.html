@@ -1,0 +1,77 @@
+{% extends 'head.html' %}
+
+{% block body %}
+<div class="max-w-6xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl font-bold text-gray-900">My Bookings</h2>
+        <a href="{% url 'dashboard' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition-colors text-sm font-medium">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Dashboard
+        </a>
+    </div>
+
+    {% if error %}
+    <div class="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+        Booking has been deleted successfully.
+    </div>
+    {% endif %}
+
+    <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">PNR / Route</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Train Name</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for i in book %}
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-bold text-primary">RWY-{{ i.id }}594{{ i.passenger.id }}</div>
+                            <div class="text-xs text-gray-500 mt-1">{{ i.route }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                            {{ i.date2 }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{{ i.passenger.train.trainname }}</div>
+                            <div class="text-xs text-gray-500">{{ i.passenger.train.train_no }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Confirmed
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="{% url 'view_ticket' i.id %}" class="text-secondary hover:text-blue-900 mr-3 inline-flex items-center">
+                                <i class="fa-solid fa-eye mr-1"></i> View
+                            </a>
+                            <a href="{% url 'delte_my_booking' i.passenger.id %}" onclick="return confirm('Are you sure you want to cancel this booking?')" class="text-red-600 hover:text-red-900 inline-flex items-center">
+                                <i class="fa-solid fa-trash mr-1"></i> Cancel
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center">
+                            <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gray-100 text-gray-400 mb-4">
+                                <i class="fa-solid fa-ticket text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-1">No bookings found</h3>
+                            <p class="text-gray-500 mb-4">You haven't booked any train tickets yet.</p>
+                            <a href="{% url 'search_train' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-blue-800">
+                                Book a Ticket Now
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

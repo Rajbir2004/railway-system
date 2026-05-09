@@ -1,0 +1,87 @@
+{% extends 'head.html' %}
+{% load static %}
+
+{% block body %}
+<div class="max-w-2xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+        <div class="bg-secondary py-6 px-8 flex items-center">
+            <div class="bg-white p-3 rounded-full text-secondary mr-4 shadow-sm">
+                <i class="fa-solid fa-pen-to-square text-xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white">Edit Train Details</h2>
+        </div>
+        
+        <div class="p-8">
+            {% if error %}
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 rounded-md">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0"><i class="fa-solid fa-circle-check text-green-500"></i></div>
+                    <div class="ml-3"><p class="text-sm text-green-700 font-medium">Changes Saved Successfully!</p></div>
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="post" action="" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Train Name</label>
+                        <input type="text" name="busname" value="{{ data.trainname }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Train Number</label>
+                        <input type="number" name="bus_no" value="{{ data.train_no }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-colors">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">From Station</label>
+                        <input type="text" name="fcity" value="{{ data.from_city }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">To Station</label>
+                        <input type="text" name="tcity" value="{{ data.to_city }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-colors">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Departure</label>
+                        <input type="text" name="dtime" value="{{ data.departuretime }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Arrival</label>
+                        <input type="text" name="atime" value="{{ data.arrivaltime }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Duration</label>
+                        <input type="text" name="ttime" value="{{ data.trevaltime }}" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Total Distance (km)</label>
+                        <input type="number" name="dis" value="{{ data.distance }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Total Seats Capacity</label>
+                        <input type="number" name="seats" value="{{ data.seats }}" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none transition-colors">
+                    </div>
+                </div>
+                
+                <div class="pt-4 flex gap-4">
+                    <button type="submit" class="flex-1 bg-secondary hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-lg shadow transition-colors flex justify-center items-center">
+                        <i class="fa-solid fa-floppy-disk mr-2"></i> Update Train
+                    </button>
+                    <a href="{% url 'view_train' %}" class="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-3 px-4 rounded-lg shadow transition-colors flex justify-center items-center border border-gray-200">
+                        <i class="fa-solid fa-xmark mr-2"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'head.html' %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden mb-8">
+        <div class="bg-primary py-4 px-6 border-b border-blue-800">
+            <h2 class="text-xl font-bold text-white"><i class="fa-solid fa-magnifying-glass mr-2"></i> Search Trains</h2>
+        </div>
+        <div class="p-6">
+            <form method="post" action="" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                {% csrf_token %}
+                <div class="md:col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">From Station</label>
+                    <select name="fcity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary" required>
+                        <option value="" disabled selected>Select Origin</option>
+                        {% for i in data2 %}
+                            <option value="{{ i.route }}">{{ i.route }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="md:col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">To Station</label>
+                    <select name="tcity" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary" required>
+                        <option value="" disabled selected>Select Destination</option>
+                        {% for i in data2 %}
+                            <option value="{{ i.route }}">{{ i.route }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="md:col-span-1">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Journey</label>
+                    <input type="date" name="date" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary" required>
+                </div>
+                <div class="md:col-span-1">
+                    <button type="submit" class="w-full bg-accent hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded-lg shadow transition-colors">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if error %}
+    <div class="bg-white rounded-2xl shadow border border-gray-200 overflow-hidden">
+        <div class="bg-gray-50 py-3 px-6 border-b border-gray-200 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-gray-800">Available Trains for {{ route }}</h3>
+            <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full border border-green-200">
+                Fare: ₹{{ fare3 }}
+            </span>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Train Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Train No</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arrival</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for queryset in route1 %}
+                        {% for i in queryset %}
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ i.trainname }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ i.train_no }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ i.departuretime }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ i.arrivaltime }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <a href="{% url 'book_detail' coun i.id route %}" class="text-white bg-secondary hover:bg-blue-600 px-3 py-1 rounded transition-colors text-xs font-semibold shadow-sm">
+                                    Book Now
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                <i class="fa-solid fa-train-subway text-4xl text-gray-300 mb-2 block"></i>
+                                No trains found for this route.
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends 'head.html' %}
+{% load static %}
+
+{% block body %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Train Details & Passenger Form -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Train Card -->
+            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-all hover:shadow-2xl">
+                <div class="relative h-48 bg-primary">
+                    {% if data2.img %}
+                        <img src="{{ data2.img.url }}" class="w-full h-full object-cover opacity-60" alt="Train">
+                    {% endif %}
+                    <div class="absolute inset-0 bg-gradient-to-t from-primary p-8 flex flex-col justify-end">
+                        <h2 class="text-3xl font-black text-white uppercase tracking-tight">{{ data2.trainname }}</h2>
+                        <p class="text-blue-100 font-mono">Train No: #{{ data2.train_no }}</p>
+                    </div>
+                    <div class="absolute top-6 right-6 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20">
+                        <span class="text-white font-bold flex items-center">
+                            <i class="fa-solid fa-chair mr-2 text-accent"></i>
+                            {{ data2.seats }} Seats Left
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="p-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-center border-b border-gray-100">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Departure</p>
+                        <p class="text-xl font-bold text-gray-800">{{ data2.departuretime }}</p>
+                        <p class="text-sm font-medium text-gray-500">{{ data2.from_city }}</p>
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <div class="w-full flex items-center px-4">
+                            <div class="h-1 flex-1 bg-gray-200 rounded-full"></div>
+                            <i class="fa-solid fa-train text-primary mx-3 text-xl"></i>
+                            <div class="h-1 flex-1 bg-gray-200 rounded-full"></div>
+                        </div>
+                        <p class="text-xs font-bold text-primary mt-2 uppercase tracking-widest">{{ data2.trevaltime }}</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Arrival</p>
+                        <p class="text-xl font-bold text-gray-800">{{ data2.arrivaltime }}</p>
+                        <p class="text-sm font-medium text-gray-500">{{ route1 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Housefull Warning -->
+            {% if housefull %}
+            <div class="bg-red-50 border-l-4 border-red-500 p-6 rounded-2xl flex items-center shadow-sm">
+                <div class="bg-red-100 p-3 rounded-full mr-4 text-red-600">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-red-800 uppercase tracking-tight">Train Housefull</h3>
+                    <p class="text-red-600 font-medium">Sorry, all seats on this train have been booked. Please try another train.</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Add Passenger Form -->
+            {% if not housefull %}
+            <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                    <i class="fa-solid fa-user-plus text-primary mr-3"></i> Add Passenger
+                </h3>
+                <form method="post" action="" class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    {% csrf_token %}
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Name</label>
+                        <input type="text" name="name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Age</label>
+                        <input type="number" name="age" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all">
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Gender</label>
+                        <select name="gender" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-1">
+                        <button type="submit" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center">
+                            <i class="fa-solid fa-plus mr-2"></i> Add
+                        </button>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right Column: Cart & Summary -->
+        <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden sticky top-8">
+                <div class="bg-gradient-to-r from-gray-800 to-gray-900 p-6 text-white">
+                    <h3 class="text-lg font-bold flex items-center">
+                        <i class="fa-solid fa-ticket text-accent mr-3"></i> Passenger List
+                    </h3>
+                </div>
+                
+                <div class="p-6 max-h-[400px] overflow-y-auto space-y-4">
+                    {% for i in pro %}
+                        {% if i.status != "set" %}
+                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100 group">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="font-bold text-gray-800">{{ i.name }}</p>
+                                    <p class="text-xs font-medium text-gray-500 uppercase tracking-widest">{{ i.gender }} • Age {{ i.age }}</p>
+                                </div>
+                                <a href="{% url 'delete_passenger' i.id pid route1 %}" class="text-gray-300 hover:text-red-500 transition-colors">
+                                    <i class="fa-solid fa-circle-xmark text-lg"></i>
+                                </a>
+                            </div>
+                            <div class="mt-2 pt-2 border-t border-gray-100 flex justify-between items-center">
+                                <span class="text-xs font-bold text-gray-400">FARE</span>
+                                <span class="text-sm font-bold text-green-600">₹{{ i.fare }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% empty %}
+                        <div class="text-center py-12 opacity-30">
+                            <i class="fa-solid fa-users text-5xl mb-4"></i>
+                            <p class="font-bold">No passengers added</p>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {% if total != 0 %}
+                <div class="p-6 bg-gray-50 border-t border-gray-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Total Amount</p>
+                            <p class="text-3xl font-black text-gray-900">₹{{ total }}</p>
+                        </div>
+                        <div class="bg-green-100 text-green-700 p-3 rounded-2xl">
+                            <i class="fa-solid fa-shield-check text-2xl"></i>
+                        </div>
+                    </div>
+                    <a href="{% url 'card_detail' total coun route1 pid %}" class="w-full bg-accent hover:bg-yellow-600 text-white font-black py-4 px-6 rounded-2xl shadow-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center text-lg uppercase tracking-wider">
+                        Proceed to Pay <i class="fa-solid fa-arrow-right ml-3"></i>
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

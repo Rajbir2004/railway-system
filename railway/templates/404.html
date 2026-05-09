@@ -1,0 +1,17 @@
+{% extends 'head.html' %}
+
+{% block body %}
+<div class="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md text-center">
+        <i class="fa-solid fa-train-subway text-9xl text-gray-300 mb-6 animate-pulse"></i>
+        <h1 class="text-6xl font-extrabold text-primary mb-2">404</h1>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Off the Tracks!</h2>
+        <p class="text-gray-500 mb-8">
+            The page you are looking for has departed, changed its schedule, or never existed in the first place.
+        </p>
+        <a href="{% url 'nav' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-blue-800 transition-colors">
+            <i class="fa-solid fa-house mr-2"></i> Return to Station (Home)
+        </a>
+    </div>
+</div>
+{% endblock %}

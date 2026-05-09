@@ -1,0 +1,59 @@
+{% extends 'head.html' %}
+{% load static %}
+
+{% block body %}
+<div class="relative bg-white overflow-hidden rounded-2xl shadow-xl">
+  <div class="max-w-7xl mx-auto">
+    <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
+      <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
+        <div class="sm:text-center lg:text-left">
+          <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            <span class="block xl:inline">Book your Train Tickets</span>
+          </h1>
+          <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+            <div class="rounded-md shadow">
+              <a href="{% url 'search_train' %}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-blue-800 md:py-4 md:text-lg md:px-10 transition-colors">
+                Search Trains
+              </a>
+            </div>
+            <div class="mt-3 sm:mt-0 sm:ml-3">
+              <a href="{% url 'register_customer' %}" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-primary bg-blue-100 hover:bg-blue-200 md:py-4 md:text-lg md:px-10 transition-colors">
+                Create Account
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
+    <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full" src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="High speed train moving through landscape">
+  </div>
+</div>
+
+<div class="mt-16 bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="text-center">
+      <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-blue-100 text-primary mb-4">
+        <i class="fa-solid fa-bolt text-2xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-gray-900 mb-2">Lightning Fast</h3>
+      <p class="text-gray-500">Book your tickets in under 2 minutes with our streamlined checkout process.</p>
+    </div>
+    <div class="text-center">
+      <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-green-100 text-green-600 mb-4">
+        <i class="fa-solid fa-shield-halved text-2xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-gray-900 mb-2">Secure Booking</h3>
+      <p class="text-gray-500">Your data is protected with enterprise-grade security and encryption.</p>
+    </div>
+    <div class="text-center">
+      <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-yellow-100 text-accent mb-4">
+        <i class="fa-solid fa-file-pdf text-2xl"></i>
+      </div>
+      <h3 class="text-lg font-bold text-gray-900 mb-2">Instant E-Tickets</h3>
+      <p class="text-gray-500">Download your boarding pass instantly as a high-quality PDF file.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'head.html' %}
+{% load static %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto py-8">
+    
+    <div class="flex justify-between items-center mb-6 no-print">
+        <h2 class="text-2xl font-bold text-gray-800">Your Ticket</h2>
+        <div class="space-x-3">
+            <a href="{% url 'my_booking' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded transition-colors shadow-sm">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Back
+            </a>
+            <button onclick="window.print()" class="bg-primary hover:bg-blue-800 text-white font-bold py-2 px-4 rounded transition-colors shadow-sm">
+                <i class="fa-solid fa-print mr-2"></i> Print Ticket
+            </button>
+        </div>
+    </div>
+
+    <!-- TICKET CONTAINER (Will be printed) -->
+    <div class="bg-white shadow-2xl rounded-lg overflow-hidden border border-gray-200" id="ticket-container">
+        
+        <!-- Ticket Header -->
+        <div class="bg-blue-900 text-white p-6 flex justify-between items-center border-b-4 border-yellow-500">
+            <div class="flex items-center">
+                <i class="fa-solid fa-train text-4xl text-yellow-400 mr-4"></i>
+                <div>
+                    <h1 class="text-3xl font-black tracking-tight uppercase">Railway System</h1>
+                    <p class="text-blue-200 text-sm font-medium tracking-widest uppercase mt-1">Confirmed E-Ticket</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-blue-200 text-xs uppercase font-bold tracking-wider mb-1">Booking Ref</p>
+                <p class="text-2xl font-mono font-bold bg-blue-800 px-3 py-1 rounded">PNR-{{ book.id }}8492</p>
+            </div>
+        </div>
+
+        <!-- Ticket Body -->
+        <div class="p-8 grid grid-cols-3 gap-8">
+            
+            <!-- Left Column: Train Info -->
+            <div class="col-span-2 space-y-6">
+                
+                <!-- Train Detail -->
+                <div>
+                    <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Train Details</h3>
+                    <div class="flex items-end">
+                        <p class="text-2xl font-bold text-gray-900 mr-3">{{ passenger.train.trainname }}</p>
+                        <p class="text-lg text-gray-500 font-mono">#{{ passenger.train.train_no }}</p>
+                    </div>
+                </div>
+
+                <!-- Journey Detail -->
+                <div class="flex items-center space-x-6 bg-gray-50 p-4 rounded-lg border border-gray-100">
+                    <div class="flex-1">
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">From</p>
+                        <p class="text-xl font-bold text-gray-800">{{ passenger.train.from_city }}</p>
+                        <p class="text-sm font-medium text-gray-500 mt-1"><i class="fa-regular fa-clock mr-1"></i> {{ passenger.train.departuretime }}</p>
+                    </div>
+                    
+                    <div class="flex flex-col items-center justify-center flex-1">
+                        <p class="text-xs font-bold text-gray-400 mb-1">{{ passenger.train.trevaltime }}</p>
+                        <div class="w-full flex items-center">
+                            <div class="h-2 w-2 rounded-full bg-blue-900"></div>
+                            <div class="h-0.5 flex-1 bg-gray-300"></div>
+                            <i class="fa-solid fa-train text-gray-400 mx-2"></i>
+                            <div class="h-0.5 flex-1 bg-gray-300"></div>
+                            <div class="h-2 w-2 rounded-full bg-blue-900"></div>
+                        </div>
+                        <p class="text-xs font-bold text-gray-400 mt-1">{{ passenger.route }}</p>
+                    </div>
+
+                    <div class="flex-1 text-right">
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">To</p>
+                        <p class="text-xl font-bold text-gray-800">{{ passenger.route }}</p>
+                        <p class="text-sm font-medium text-gray-500 mt-1"><i class="fa-regular fa-clock mr-1"></i> {{ passenger.train.arrivaltime }}</p>
+                    </div>
+                </div>
+
+                <!-- Passenger Details -->
+                <div>
+                    <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2">Passenger Information</h3>
+                    <table class="w-full text-left">
+                        <tr class="border-b border-gray-200">
+                            <th class="py-2 text-gray-600 font-medium">Name</th>
+                            <td class="py-2 text-gray-900 font-bold">{{ passenger.name }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-2 text-gray-600 font-medium">Age / Gender</th>
+                            <td class="py-2 text-gray-900 font-bold">{{ passenger.age }} Yrs / {{ passenger.gender }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-2 text-gray-600 font-medium">Journey Date</th>
+                            <td class="py-2 text-gray-900 font-bold">{{ passenger.date1 }}</td>
+                        </tr>
+                        <tr class="border-b border-gray-200">
+                            <th class="py-2 text-gray-600 font-medium">Status</th>
+                            <td class="py-2 text-green-600 font-bold uppercase">Confirmed</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Fare & QR -->
+            <div class="col-span-1 border-l-2 border-dashed border-gray-200 pl-8 flex flex-col justify-between">
+                
+                <div>
+                    <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Booking Date</h3>
+                    <p class="text-gray-800 font-medium mb-6">{{ book.date2 }}</p>
+
+                    <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Amount Paid</h3>
+                    <p class="text-4xl font-black text-green-600">₹{{ book.fare }}</p>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PNR-{{ book.id }}8492" alt="QR Code" class="mx-auto border-4 border-white shadow-sm mb-3">
+                    <p class="text-xs text-gray-400 font-medium">Scan for verification</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Ticket Footer -->
+        <div class="bg-gray-100 p-4 text-center border-t border-gray-200 text-xs text-gray-500">
+            <p><strong>Terms & Conditions:</strong> Please carry a valid ID proof along with this e-ticket. Arrive at least 30 minutes before departure.</p>
+        </div>
+
+    </div>
+</div>
+
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #ticket-container, #ticket-container * {
+            visibility: visible;
+        }
+        #ticket-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            box-shadow: none;
+            border: none;
+        }
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
+{% endblock %}

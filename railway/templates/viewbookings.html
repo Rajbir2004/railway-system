@@ -1,0 +1,63 @@
+{% extends 'head.html' %}
+
+{% block body %}
+<div class="max-w-6xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-3xl font-bold text-gray-900">All Bookings</h2>
+        <a href="{% url 'admindashboard' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition-colors text-sm font-medium">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Admin Dashboard
+        </a>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow border border-gray-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">User</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">PNR / Route</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Train Name</th>
+                        <th class="px-6 py-4 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for i in book %}
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-bold text-gray-900">{{ i.user.user.username }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-bold text-primary">RWY-{{ i.id }}594{{ i.passenger.id }}</div>
+                            <div class="text-xs text-gray-500 mt-1">{{ i.route }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-medium">
+                            {{ i.date2 }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{{ i.passenger.train.trainname }}</div>
+                            <div class="text-xs text-gray-500">{{ i.passenger.train.train_no }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="{% url 'deletebooking' i.passenger.id %}" onclick="return confirm('Are you sure you want to delete this booking?')" class="text-red-600 hover:text-red-900 inline-flex items-center">
+                                <i class="fa-solid fa-trash mr-1"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center">
+                            <div class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gray-100 text-gray-400 mb-4">
+                                <i class="fa-solid fa-ticket text-2xl"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-1">No bookings found</h3>
+                            <p class="text-gray-500 mb-4">There are currently no tickets booked in the system.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

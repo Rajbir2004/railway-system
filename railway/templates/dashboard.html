@@ -1,0 +1,37 @@
+{% extends 'head.html' %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8 flex items-center justify-between">
+        <div>
+            <h2 class="text-3xl font-bold text-gray-900">Welcome, {{ request.user.username }}!</h2>
+            <p class="mt-2 text-sm text-gray-600">This is your personal dashboard.</p>
+        </div>
+        <div class="h-16 w-16 bg-blue-100 text-primary rounded-full flex items-center justify-center text-2xl shadow-inner">
+            <i class="fa-solid fa-user"></i>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="{% url 'search_train' %}" class="group bg-white rounded-2xl shadow border border-gray-100 overflow-hidden hover:shadow-lg hover:border-primary transition-all">
+            <div class="p-8 text-center">
+                <div class="mx-auto h-20 w-20 bg-blue-50 text-primary rounded-full flex items-center justify-center text-3xl mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Search Trains</h3>
+                <p class="text-gray-500">Find routes, check availability, and book new tickets instantly.</p>
+            </div>
+        </a>
+
+        <a href="{% url 'my_booking' %}" class="group bg-white rounded-2xl shadow border border-gray-100 overflow-hidden hover:shadow-lg hover:border-accent transition-all">
+            <div class="p-8 text-center">
+                <div class="mx-auto h-20 w-20 bg-yellow-50 text-accent rounded-full flex items-center justify-center text-3xl mb-4 group-hover:bg-accent group-hover:text-white transition-colors">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">My Bookings</h3>
+                <p class="text-gray-500">View your ticket history, download PDFs, or cancel bookings.</p>
+            </div>
+        </a>
+    </div>
+</div>
+{% endblock %}

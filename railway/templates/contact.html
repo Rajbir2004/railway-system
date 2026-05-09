@@ -1,0 +1,71 @@
+{% extends 'head.html' %}
+{% load static %}
+
+{% block body %}
+<div class="max-w-5xl mx-auto px-4 py-12">
+    <div class="text-center mb-16">
+        <h2 class="text-4xl font-black text-gray-900 mb-4 uppercase tracking-tight">Contact Us</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Contact Info -->
+        <div class="space-y-8">
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 flex items-start space-x-6">
+                <div class="bg-blue-100 p-4 rounded-2xl text-primary">
+                    <i class="fa-solid fa-location-dot text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Headquarters</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Railway Headquarters,<br>
+                        New Delhi, India
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 flex items-start space-x-6">
+                <div class="bg-green-100 p-4 rounded-2xl text-green-600">
+                    <i class="fa-solid fa-envelope text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Email Address</h3>
+                    <p class="text-gray-600 leading-relaxed">rajbir6484@gmail.com</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 flex items-start space-x-6">
+                <div class="bg-yellow-100 p-4 rounded-2xl text-yellow-600">
+                    <i class="fa-solid fa-clock text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Support Hours</h3>
+                    <p class="text-gray-600 leading-relaxed">Available 24 hours a day,<br>7 days a week</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="bg-white p-10 rounded-3xl shadow-2xl border border-gray-100">
+            <h3 class="text-2xl font-bold text-gray-900 mb-8">Send a Message</h3>
+            <form action="#" method="POST" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Full Name</label>
+                    <input type="text" name="name" required class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Email</label>
+                    <input type="email" name="email" required class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">Message</label>
+                    <textarea rows="4" name="message" required class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary focus:bg-white outline-none transition-all"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-primary hover:bg-blue-800 text-white font-bold py-4 px-6 rounded-2xl shadow-xl transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                    Send Message
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
