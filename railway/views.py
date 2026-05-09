@@ -186,7 +186,14 @@ def Verify_OTP(request):
 
 @login_required(login_url='login_customer')
 def Search_Train(request):
-    data = Add_route.objects.values('route').distinct()
+    # Get cities from both Add_route and Add_Train
+    route_cities = list(Add_route.objects.values_list('route', flat=True).distinct())
+    train_start_cities = list(Add_Train.objects.values_list('from_city', flat=True).distinct())
+    train_end_cities = list(Add_Train.objects.values_list('to_city', flat=True).distinct())
+    
+    # Combine and unique
+    all_cities = sorted(list(set(route_cities + train_start_cities + train_end_cities)))
+    
     error = False
     route1 = []
     route = ""
@@ -216,7 +223,7 @@ def Search_Train(request):
         request.session['search_route'] = route
         error = True
 
-    d = {"data2": data, 'route1': route1, 'fare3': fare3, "error": error, 'coun': coun, 'route': route}
+    d = {"data2": all_cities, 'route1': route1, 'fare3': fare3, "error": error, 'coun': coun, 'route': route}
     return render(request, 'search_train.html', d)
 
 @login_required(login_url='login_customer')
