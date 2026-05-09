@@ -115,12 +115,23 @@ def Register_customer(request):
         otp = str(random.randint(100000, 999999))
         request.session['registration_otp'] = otp
         
-        # Send Email via Apps Script API
-        send_custom_mail(
-            'Your Railway Booking System OTP',
-            f'Hello {f},\n\nYour OTP for registration is: {otp}\n\nWelcome aboard!',
-            [e]
-        )
+        # Explicitly save session to catch any database errors early
+        try:
+            request.session.modified = True
+            request.session.save()
+        except Exception as session_err:
+            print("Session Save Error:", session_err)
+            return render(request, 'register_customer.html', {'error': "Database connection busy. Please try again."})
+
+        # Send Email via Apps Script API (completely decoupled)
+        try:
+            send_custom_mail(
+                'Your Railway Booking System OTP',
+                f'Hello {f},\n\nYour OTP for registration is: {otp}\n\nWelcome aboard!',
+                [e]
+            )
+        except:
+            pass # Never let email failure crash registration
         
         return redirect('verify_otp')
         
