@@ -9,6 +9,29 @@ from django.core.mail import send_mail
 from django.conf import settings
 import datetime
 import random
+import requests
+import json
+
+def send_custom_mail(subject, message, recipient_list, html_message=None):
+    url = os.environ.get('APPS_SCRIPT_URL')
+    if not url:
+        # Fallback to standard Django mail if URL not set
+        from django.core.mail import send_mail
+        return send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, recipient_list, fail_silently=True, html_message=html_message)
+    
+    data = {
+        "to": recipient_list[0],
+        "subject": subject,
+        "body": message,
+        "html_message": html_message
+    }
+    try:
+        response = requests.post(url, data=json.dumps(data), headers={'Content-Type': 'application/json'}, timeout=10)
+        return response.status_code == 200
+    except Exception as e:
+        print("Apps Script Mail Error:", e)
+        return False
+
 
 def nav(request):
     return render(request, 'carousel.html')
@@ -23,15 +46,13 @@ def Contact(request):
         message = request.POST.get('message')
         
         try:
-            send_mail(
+            send_custom_mail(
                 f'New Contact Message from {name}',
                 f'You have received a new message from your website contact form:\n\n'
                 f'Name: {name}\n'
                 f'Email: {email}\n\n'
                 f'Message:\n{message}',
-                settings.DEFAULT_FROM_EMAIL,
-                ['rajbir6484@gmail.com'],
-                fail_silently=False,
+                ['rajbir6484@gmail.com']
             )
             messages.success(request, 'Your message has been sent successfully!')
         except Exception as e:
@@ -94,19 +115,13 @@ def Register_customer(request):
         otp = str(random.randint(100000, 999999))
         request.session['registration_otp'] = otp
         
-        # Send Email with timeout protection
-        try:
-            send_mail(
-                'Your Railway Booking System OTP',
-                f'Hello {f},\n\nYour OTP for registration is: {otp}\n\nWelcome aboard!',
-                settings.DEFAULT_FROM_EMAIL,
-                [e],
-                fail_silently=True, # Prevent hanging if SMTP is slow
-            )
-        except Exception as ex:
-            print("Failed to send OTP email:", ex)
-            # We still proceed to verify_otp because the session has the data
-            
+        # Send Email via Apps Script API
+        send_custom_mail(
+            'Your Railway Booking System OTP',
+            f'Hello {f},\n\nYour OTP for registration is: {otp}\n\nWelcome aboard!',
+            [e]
+        )
+        
         return redirect('verify_otp')
         
     d = {'error': error}
@@ -268,26 +283,21 @@ def Card_Detail(request, total, coun, route1, pid):
                 i.save()
                 just_booked.append(i)
                 
-        # Send Email E-Ticket
+        # Send Email E-Ticket via Apps Script API
         if just_booked:
-            try:
-                html_message = render_to_string('email_ticket.html', {
-                    'pro': just_booked, 
-                    'total': total, 
-                    'route1': route1, 
-                    'data2': data2,
-                    'user': request.user
-                })
-                send_mail(
-                    'Your Railway E-Ticket Confirmation',
-                    'Thank you for booking with us! Please view this email in an HTML-compatible client to see your e-ticket.',
-                    settings.DEFAULT_FROM_EMAIL,
-                    [request.user.email],
-                    fail_silently=True,
-                    html_message=html_message
-                )
-            except Exception as e:
-                print("Failed to send ticket email:", e)
+            html_message = render_to_string('email_ticket.html', {
+                'pro': just_booked, 
+                'total': total, 
+                'route1': route1, 
+                'data2': data2,
+                'user': request.user
+            })
+            send_custom_mail(
+                'Your Railway E-Ticket Confirmation',
+                'Thank you for booking with us!',
+                [request.user.email],
+                html_message=html_message
+            )
                 
         return redirect('my_booking')
 
