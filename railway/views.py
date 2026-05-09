@@ -203,20 +203,37 @@ def Search_Train(request):
         f = request.POST.get("fcity")
         t = request.POST.get("tcity")
         da = request.POST.get("date")
+        # 1. Search in Add_route (Intermediate cities)
         data1 = Add_route.objects.filter(route=f)
         data2 = Add_route.objects.filter(route=t)
         
         for i in data1:
             for j in data2:
                 if i.train.train_no == j.train.train_no:
-                    route1.append(Add_Train.objects.filter(train_no=i.train.train_no))
+                    # Avoid duplicates in search results
+                    matched_trains = Add_Train.objects.filter(train_no=i.train.train_no)
+                    if matched_trains.exists() and matched_trains[0] not in [t for qs in route1 for t in qs]:
+                        route1.append(matched_trains)
         
-        dist1 = data1.first().distance if data1.exists() else 0
-        dist2 = data2.first().distance if data2.exists() else 0
-        total_dist = abs(dist2 - dist1)
+        # 2. Search in Add_Train directly (Direct city-to-city matches)
+        direct_trains = Add_Train.objects.filter(from_city=f, to_city=t)
+        if direct_trains.exists():
+            for dt in direct_trains:
+                if dt not in [t for qs in route1 for t in qs]:
+                    route1.append(Add_Train.objects.filter(id=dt.id))
+
+        # Calculate fare (using distance from first available match)
+        if data1.exists() and data2.exists():
+            dist1 = data1.first().distance
+            dist2 = data2.first().distance
+            total_dist = abs(dist2 - dist1)
+        elif direct_trains.exists():
+            total_dist = direct_trains.first().distance
+        else:
+            total_dist = 0
         
         # Calculate fare: 0.5 RS per KM
-        fare3 = int(total_dist * 0.5)
+        fare3 = int(total_dist * 0.5) if total_dist else 0
         
         if fare3 < 5:
             fare3 = 5
